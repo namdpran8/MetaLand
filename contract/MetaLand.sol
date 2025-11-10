@@ -503,7 +503,7 @@ contract MetaLand {
         LandParcel storage land = landParcels[_landId];
         
         uint256 timeSinceLastPayment = block.timestamp - land.lastTaxPayment;
-        uint256 landValue = land.size * uint256(land.rarity + 1) * 1000;
+        uint256 landValue = land.size * (uint256(land.rarity) + 1) * 1000;
         uint256 taxDue = (landValue * taxRatePerYear * timeSinceLastPayment) / (100 * TAX_PERIOD);
         
         require(msg.value >= taxDue, "Insufficient tax payment");
@@ -633,7 +633,7 @@ contract MetaLand {
         }
         require(totalSizeCheck == landParcels[_landId].size, "Total sizes must equal original");
         
-        LandParcel memory originalLand = landParcels[_landId];
+        LandParcel storage originalLand = landParcels[_landId];
         uint256[] memory newLandIds = new uint256[](_sizes.length);
         
         for (uint256 i = 0; i < _sizes.length; i++) {
@@ -791,7 +791,7 @@ contract MetaLand {
     function calculateTaxDue(uint256 _landId) public view validLandId(_landId) returns (uint256) {
         LandParcel storage land = landParcels[_landId];
         uint256 timeSinceLastPayment = block.timestamp - land.lastTaxPayment;
-        uint256 landValue = land.size * uint256(land.rarity + 1) * 1000;
+        uint256 landValue = land.size * (uint256(land.rarity) + 1) * 1000;
         uint256 taxDue = (landValue * taxRatePerYear * timeSinceLastPayment) / (100 * TAX_PERIOD);
         return taxDue;
     }
